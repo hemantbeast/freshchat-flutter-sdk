@@ -4,18 +4,18 @@ version '1.0'
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:7.4.2'
     }
 }
 
 rootProject.allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { url "https://jitpack.io" }
     }
 }
@@ -23,10 +23,11 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 31
+    namespace 'com.freshchat.consumer.sdk.flutter'
+    compileSdk 33
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 23
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -34,7 +35,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:localbroadcastmanager:28.0.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
     implementation 'com.github.freshworks:freshchat-android:6.1.1'
 }
 

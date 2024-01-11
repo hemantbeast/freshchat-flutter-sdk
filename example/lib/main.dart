@@ -1,9 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freshchat_sdk/freshchat_sdk.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:freshchat_sdk/freshchat_user.dart';
 
 void main() async {
@@ -108,8 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 setState(
                   () {
-                    Freshchat.identifyUser(
-                        externalId: externalId, restoreId: restoreId);
+                    Freshchat.identifyUser(externalId: externalId, restoreId: restoreId);
                     Navigator.of(context, rootNavigator: true).pop(context);
                   },
                 );
@@ -141,11 +141,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void notifyRestoreId(var event) async {
     FreshchatUser user = await Freshchat.getUser;
     String? restoreId = user.getRestoreId();
-    if (restoreId != null){
+    if (restoreId != null) {
       Clipboard.setData(new ClipboardData(text: restoreId));
     }
-    _scaffoldKey!.currentState!.showSnackBar(
-        new SnackBar(content: new Text("Restore ID copied: $restoreId")));
+    // _scaffoldKey!.currentState!.showSnackBar(
+    //     new SnackBar(content: new Text("Restore ID copied: $restoreId")));
   }
 
   void getUserProps(BuildContext context) {
@@ -326,8 +326,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var unreadCountStream = Freshchat.onMessageCountUpdate;
     unreadCountStream.listen((event) {
-        print("Have unread messages: $event");
-      });
+      print("Have unread messages: $event");
+    });
 
     var userInteractionStream = Freshchat.onUserInteraction;
     userInteractionStream.listen((event) {
@@ -336,8 +336,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     if (Platform.isAndroid) {
       registerFcmToken();
-      FirebaseMessaging.instance.onTokenRefresh
-          .listen(Freshchat.setPushRegistrationToken);
+      FirebaseMessaging.instance.onTokenRefresh.listen(Freshchat.setPushRegistrationToken);
 
       Freshchat.setNotificationConfig(notificationInterceptionEnabled: true);
       var notificationInterceptStream = Freshchat.onNotificationIntercept;
@@ -407,13 +406,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             )),
                       ),
                       onTap: () async {
-                        var unreadCountStatus =
-                            await Freshchat.getUnreadCountAsync;
+                        var unreadCountStatus = await Freshchat.getUnreadCountAsync;
                         int count = unreadCountStatus['count'];
                         String status = unreadCountStatus['status'];
                         final snackBar = SnackBar(
-                          content: Text(
-                              "Unread Message Count: $count  Status: $status"),
+                          content: Text("Unread Message Count: $count  Status: $status"),
                         );
                         Scaffold.of(context).showSnackBar(snackBar);
                       });
