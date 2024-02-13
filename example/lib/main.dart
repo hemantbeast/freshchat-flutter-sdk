@@ -144,8 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (restoreId != null) {
       Clipboard.setData(new ClipboardData(text: restoreId));
     }
-    // _scaffoldKey!.currentState!.showSnackBar(
-    //     new SnackBar(content: new Text("Restore ID copied: $restoreId")));
+    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(content: new Text("Restore ID copied: $restoreId")));
   }
 
   void getUserProps(BuildContext context) {
@@ -381,7 +380,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
                             child: Text(
                               "FAQs",
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                               textAlign: TextAlign.center,
                             )),
                       ),
@@ -401,7 +400,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
                             child: Text(
                               "Unread Count",
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                               textAlign: TextAlign.center,
                             )),
                       ),
@@ -412,7 +411,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         final snackBar = SnackBar(
                           content: Text("Unread Message Count: $count  Status: $status"),
                         );
-                        Scaffold.of(context).showSnackBar(snackBar);
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       });
                   break;
                 case 2:
@@ -423,7 +422,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
                             child: Text(
                               "Reset User",
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                               textAlign: TextAlign.center,
                             )),
                       ),
@@ -439,7 +438,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
                             child: Text(
                               "Restore User",
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                               textAlign: TextAlign.center,
                             )),
                       ),
@@ -455,7 +454,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
                             child: Text(
                               "Set User Properties",
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                               textAlign: TextAlign.center,
                             )),
                       ),
@@ -471,7 +470,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.fromLTRB(0, 70, 0, 0),
                             child: Text(
                               "Send Message",
-                              style: Theme.of(context).textTheme.headline5,
+                              style: Theme.of(context).textTheme.headlineSmall,
                               textAlign: TextAlign.center,
                             )),
                       ),
@@ -483,7 +482,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return Center(
                     child: Text(
                       'Item $index',
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   );
                   break;
