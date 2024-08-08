@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.1.4'
     }
 }
 
@@ -24,7 +24,7 @@ apply plugin: 'com.android.library'
 
 android {
     namespace 'com.freshchat.consumer.sdk.flutter'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 23
@@ -36,7 +36,7 @@ android {
 
 dependencies {
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
-    implementation 'com.github.freshworks:freshchat-android:6.1.5'
+    implementation 'com.github.freshworks:freshchat-android:6.2.7'
 }
 
 
