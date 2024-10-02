@@ -80,10 +80,6 @@ public class FreshchatSdkPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     public static void register(@NonNull PluginRegistry registry) {
-        if (registry == null) {
-            return;
-        }
-
         registerWith(registry.registrarFor(PLUGIN_KEY));
     }
 
@@ -226,7 +222,7 @@ public class FreshchatSdkPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     public String sdkVersion() {
-        return com.freshchat.consumer.sdk.BuildConfig.VERSION_NAME;
+        return Freshchat.getSDKVersionName();
     }
 
     public void showFAQsWithOptions(MethodCall call) {
@@ -518,7 +514,7 @@ public class FreshchatSdkPlugin implements FlutterPlugin, MethodCallHandler {
         try {
             Map pushPayload = call.argument("pushPayload");
             Bundle pushPayloadBundle = jsonToBundle(pushPayload);
-            Freshchat.handleFcmMessage(context, pushPayloadBundle);
+            new Thread(() -> Freshchat.handleFcmMessage(context, pushPayloadBundle)).start();
         } catch (Exception e) {
             Log.e(ERROR_TAG, e.toString());
         }
@@ -528,7 +524,7 @@ public class FreshchatSdkPlugin implements FlutterPlugin, MethodCallHandler {
     private FreshchatWebViewListener webviewListener = new FreshchatWebViewListener() {
         @Override
         public void onLocaleChangedByWebView(@NonNull WeakReference<Context> activityContext) {
-            Map map = new HashMap<>();
+            Map<Object, Object> map = new HashMap<>();
             channel.invokeMethod(ACTION_LOCALE_CHANGED_BY_WEBVIEW, map);
         }
     };

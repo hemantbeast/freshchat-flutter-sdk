@@ -1,3 +1,34 @@
+## 0.10.20 (28/08/2024)
+### Bug fixes
+* Fixed orientations of quick reply option for RTL users in iOS.
+* Fixed missing underlines in phone numbers within chat messages in iOS.
+* Fixed missing separator line between the reply editor and footer branding view in iOS.
+* Fixed display of file extension and size on the chat preview screen when the file name is long in iOS.
+* Fixed text and image position swapping in chat messages after restoring the user in iOS.
+* Optimised message rendering in the chat detail view in iOS.
+* Fixed a rare crash linked with keychain storage component in iOS.
+* Fixed an occasional crash when searching for support articles in iOS.
+* Fixed auto-scrolling not work correctly after selecting carousel and dropdown messages in iOS.
+* Fixed an issue for keyboard automatically dismiss after user sent a message in non-bot conversation in iOS.
+* Fix for Customer chat history not getting restored above a few messages in Android.
+* Fix for FAQ article message is not taking up the screen space and looks squished/Compressed in Android.
+
+## 0.10.19 (08/08/2024)
+### Bug fixes
+* Fix for Window Manager Bad Token Exception when attaching pictures in Android.
+* Fix for issue with custom link handler not working in conversation in Android.
+* Fixed the issue where the conversation list was loading for a long time if the token status was expired after reset user in iOS.
+* Fixed the ‘Token not processed’ status displayed when the user restored with an invalid token in specific scenarios in iOS.
+* Fixed the phone number validation issue where the bot flow did not proceed to the next step when an Arabic phone number was entered in iOS.
+* Fixed the issue where after closing a conversation screen, another or the same conversation screen would pop up in iOS.
+* Fixed an intermittent crash in React Native when tapping on a user message in iOS.
+* Resolved the issue where the keyboard is dismissed after opening the country code view in iOS.
+* Fixed  issue where chatbot flows were not triggering properly, including instances where users were able to type and send replies initially in iOS.
+* Fixed the looping of input messages sent by the user, which was causing issues in the production conversation in iOS.
+
+### Enhancement
+* Updated SDK to target Android 14 to comply with Google Play Store policies.
+
 ## 0.10.18 (12/07/2024)
 ### Bug fixes
 * Fix for bot quick actions display once a conversation is resolved in iOS.

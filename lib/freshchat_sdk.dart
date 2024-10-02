@@ -1,28 +1,20 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/services.dart';
+
 import 'freshchat_user.dart';
 
 enum FaqFilterType { Article, Category }
 
-enum JwtTokenStatus {
-  TOKEN_NOT_SET,
-  TOKEN_NOT_PROCESSED,
-  TOKEN_VALID,
-  TOKEN_INVALID,
-  TOKEN_EXPIRED
-}
+enum JwtTokenStatus { TOKEN_NOT_SET, TOKEN_NOT_PROCESSED, TOKEN_VALID, TOKEN_INVALID, TOKEN_EXPIRED }
 
 final StreamController restoreIdStreamController = StreamController.broadcast();
-final StreamController freshchatEventStreamController =
-    StreamController.broadcast();
-final StreamController messageCountUpdatesStreamController =
-    StreamController.broadcast();
-final StreamController linkHandlingStreamController =
-    StreamController.broadcast();
+final StreamController freshchatEventStreamController = StreamController.broadcast();
+final StreamController messageCountUpdatesStreamController = StreamController.broadcast();
+final StreamController linkHandlingStreamController = StreamController.broadcast();
 final StreamController webviewStreamController = StreamController.broadcast();
-final StreamController notificationInterceptController =
-    StreamController.broadcast();
+final StreamController notificationInterceptController = StreamController.broadcast();
 final StreamController refreshJwtController = StreamController.broadcast();
 final StreamController userInteractionController = StreamController.broadcast();
 
@@ -32,13 +24,7 @@ extension ParseToString on FaqFilterType? {
   }
 }
 
-enum Priority {
-  PRIORITY_DEFAULT,
-  PRIORITY_LOW,
-  PRIORITY_MIN,
-  PRIORITY_HIGH,
-  PRIORITY_MAX
-}
+enum Priority { PRIORITY_DEFAULT, PRIORITY_LOW, PRIORITY_MIN, PRIORITY_HIGH, PRIORITY_MAX }
 
 extension getPriorityValue on Priority {
   int priorityValue() {
@@ -64,15 +50,7 @@ extension getPriorityValue on Priority {
   }
 }
 
-enum Importance {
-  IMPORTANCE_UNSPECIFIED,
-  IMPORTANCE_NONE,
-  IMPORTANCE_MIN,
-  IMPORTANCE_LOW,
-  IMPORTANCE_DEFAULT,
-  IMPORTANCE_HIGH,
-  IMPORTANCE_MAX
-}
+enum Importance { IMPORTANCE_UNSPECIFIED, IMPORTANCE_NONE, IMPORTANCE_MIN, IMPORTANCE_LOW, IMPORTANCE_DEFAULT, IMPORTANCE_HIGH, IMPORTANCE_MAX }
 
 extension getImportanceValue on Importance {
   int importanceValue() {
@@ -112,17 +90,13 @@ extension on List<String>? {
   bool get isNullOrEmpty => this == null || this!.isEmpty;
 }
 
-const FRESHCHAT_USER_RESTORE_ID_GENERATED =
-    "FRESHCHAT_USER_RESTORE_ID_GENERATED";
+const FRESHCHAT_USER_RESTORE_ID_GENERATED = "FRESHCHAT_USER_RESTORE_ID_GENERATED";
 const FRESHCHAT_EVENTS = "FRESHCHAT_EVENTS";
-const FRESHCHAT_ACTION_MESSAGE_COUNT_CHANGED =
-    "FRESHCHAT_ACTION_MESSAGE_COUNT_CHANGED";
+const FRESHCHAT_ACTION_MESSAGE_COUNT_CHANGED = "FRESHCHAT_ACTION_MESSAGE_COUNT_CHANGED";
 const ACTION_OPEN_LINKS = "ACTION_OPEN_LINKS";
 const ACTION_LOCALE_CHANGED_BY_WEBVIEW = "ACTION_LOCALE_CHANGED_BY_WEBVIEW";
-const FRESHCHAT_ACTION_NOTIFICATION_INTERCEPTED =
-    "FRESHCHAT_ACTION_NOTIFICATION_INTERCEPTED";
-const FRESHCHAT_SET_TOKEN_TO_REFRESH_DEVICE_PROPERTIES =
-    "FRESHCHAT_SET_TOKEN_TO_REFRESH_DEVICE_PROPERTIES";
+const FRESHCHAT_ACTION_NOTIFICATION_INTERCEPTED = "FRESHCHAT_ACTION_NOTIFICATION_INTERCEPTED";
+const FRESHCHAT_SET_TOKEN_TO_REFRESH_DEVICE_PROPERTIES = "FRESHCHAT_SET_TOKEN_TO_REFRESH_DEVICE_PROPERTIES";
 const FRESHCHAT_ACTION_USER_INTERACTION = "FRESHCHAT_ACTION_USER_INTERACTION";
 
 class Freshchat {
@@ -188,8 +162,7 @@ class Freshchat {
   /// Returns an instance of FreshchatUser object, pre-populated with current user information
   static Future<FreshchatUser> get getUser async {
     final Map userDetails = await _channel.invokeMethod('getUser');
-    FreshchatUser user =
-        new FreshchatUser(userDetails["externalId"], userDetails["restoreId"]);
+    FreshchatUser user = new FreshchatUser(userDetails["externalId"], userDetails["restoreId"]);
     if (userDetails["email"] != null) {
       user.setEmail(userDetails["email"]);
     }
@@ -218,10 +191,7 @@ class Freshchat {
 
   /// Set bot variables and bot specific variables with Freshchat
   static void setBotVariables(Map botVariables, Map specificVariables) async {
-    await _channel.invokeMethod('setBotVariables', <String, Map>{
-      'botVariables': botVariables,
-      'specificVariables':specificVariables
-    });
+    await _channel.invokeMethod('setBotVariables', <String, Map>{'botVariables': botVariables, 'specificVariables': specificVariables});
   }
 
   /// Get the current Freshchat flutter SDK version as well as the corresponding native SDK version (Android or iOS)
@@ -229,7 +199,7 @@ class Freshchat {
     final String sdkVersion = await _channel.invokeMethod('getSdkVersion');
     final String operatingSystem = Platform.operatingSystem;
     // As there is no simple way to get current freshchat flutter sdk version, we are hardcoding here.
-    final String allSdkVersion = "flutter-0.10.18-$operatingSystem-$sdkVersion ";
+    final String allSdkVersion = "flutter-0.10.20-$operatingSystem-$sdkVersion ";
     return allSdkVersion;
   }
 
@@ -244,10 +214,7 @@ class Freshchat {
       bool showFaqCategoriesAsGrid = true,
       bool showContactUsOnAppBar = false,
       bool showContactUsOnFaqNotHelpful = true}) async {
-    if (faqTitle.isNullOrEmpty &&
-        contactUsTitle.isNullOrEmpty &&
-        faqTags.isNullOrEmpty &&
-        contactUsTags.isNullOrEmpty) {
+    if (faqTitle.isNullOrEmpty && contactUsTitle.isNullOrEmpty && faqTags.isNullOrEmpty && contactUsTags.isNullOrEmpty) {
       await _channel.invokeMethod('showFAQsWithOptions', <String, dynamic>{
         'showContactUsOnFaqScreens': showContactUsOnFaqScreens,
         'showFaqCategoriesAsGrid': showFaqCategoriesAsGrid,
@@ -282,21 +249,18 @@ class Freshchat {
 
   /// Retrieve a count of unread messages across all unrestricted/public channels for the user asynchronously.
   static Future<Map> get getUnreadCountAsync async {
-    final Map unreadCountStatus =
-        await _channel.invokeMethod('getUnreadCountAsync');
+    final Map unreadCountStatus = await _channel.invokeMethod('getUnreadCountAsync');
     return unreadCountStatus;
   }
 
   /// Retrieve a count of unread messages for channels with tags.
   static Future<Map> getUnreadCountAsyncForTags(List<String> tags) async {
-    final Map unreadCountStatus = await _channel.invokeMethod(
-        'getUnreadCountAsyncForTags', <String, List<String>>{'tags': tags});
+    final Map unreadCountStatus = await _channel.invokeMethod('getUnreadCountAsyncForTags', <String, List<String>>{'tags': tags});
     return unreadCountStatus;
   }
 
   /// Displays list of Support Channels (Channel List Activity) through which users can converse with you
-  static void showConversations(
-      {String? filteredViewTitle, List<String>? tags}) async {
+  static void showConversations({String? filteredViewTitle, List<String>? tags}) async {
     if (filteredViewTitle == null && tags == null) {
       await _channel.invokeMethod('showConversations');
     } else {
@@ -381,14 +345,10 @@ class Freshchat {
 
   static void _registerForEvent(String eventName, bool shouldRegister) {
     _channel.setMethodCallHandler(_wrapperMethodCallHandler);
-    _channel.invokeMethod('registerForEvent', <String, dynamic>{
-      'eventName': eventName,
-      'shouldRegister': shouldRegister
-    });
+    _channel.invokeMethod('registerForEvent', <String, dynamic>{'eventName': eventName, 'shouldRegister': shouldRegister});
   }
 
-  static Future<dynamic> _wrapperMethodCallHandler(
-      MethodCall methodCall) async {
+  static Future<dynamic> _wrapperMethodCallHandler(MethodCall methodCall) async {
     switch (methodCall.method) {
       case FRESHCHAT_USER_RESTORE_ID_GENERATED:
         bool? isRestoreIdGenerated = methodCall.arguments;
@@ -458,8 +418,7 @@ class Freshchat {
 
   /// Check if the notification received with the provided intent is a Freshchat notification or not (Android)
   static Future<bool> isFreshchatNotification(Map pushPayload) async {
-    bool isFreshchatNotification =
-        await _channel.invokeMethod("isFreshchatNotification", <String, Map>{
+    bool isFreshchatNotification = await _channel.invokeMethod("isFreshchatNotification", <String, Map>{
       'pushPayload': pushPayload,
     });
     return isFreshchatNotification;
@@ -486,8 +445,7 @@ class Freshchat {
   /// Internally uses {@link android.text.util.Linkify#addLinks(Spannable, Pattern, String)}
   /// The given regex is converted into a pattern and passed to the addLinks method.
   static void linkifyWithPattern(String regex, String defaultScheme) {
-    _channel.invokeMethod("linkifyWithPattern",
-        <String, String>{'regex': regex, 'defaultScheme': defaultScheme});
+    _channel.invokeMethod("linkifyWithPattern", <String, String>{'regex': regex, 'defaultScheme': defaultScheme});
   }
 
   /// Notify any locale change that happens during runtime to Freshchat (Android)
@@ -564,8 +522,7 @@ class Freshchat {
   /// Stream which triggers a callback on JWT token refresh
   static Stream get onJwtRefresh {
     refreshJwtController.onCancel = () {
-      _registerForEvent(
-          FRESHCHAT_SET_TOKEN_TO_REFRESH_DEVICE_PROPERTIES, false);
+      _registerForEvent(FRESHCHAT_SET_TOKEN_TO_REFRESH_DEVICE_PROPERTIES, false);
     };
     refreshJwtController.onListen = () {
       _registerForEvent(FRESHCHAT_SET_TOKEN_TO_REFRESH_DEVICE_PROPERTIES, true);

@@ -32,7 +32,7 @@ void handleFreshchatNotification(Map<String, dynamic> message) async {
 
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
   print("Inside background handler");
-  
+
   //NOTE: Freshchat notification - Initialize Firebase for Android only.
   if (Platform.isAndroid) {
     await Firebase.initializeApp();
@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
     Freshchat.init(APPID, APPKEY, DOMAIN);
     Freshchat.linkifyWithPattern("google", "https://google.com");
     Freshchat.setNotificationConfig(
-      notificationInterceptionEnabled: true,
+      notificationInterceptionEnabled: false,
       largeIcon: "large_icon",
       smallIcon: "small_icon",
     );
@@ -109,9 +109,8 @@ class _MyAppState extends State<MyApp> {
     if (Platform.isAndroid) {
       registerFcmToken();
 
-      FirebaseMessaging.instance.onTokenRefresh
-          .listen(Freshchat.setPushRegistrationToken);
-      
+      FirebaseMessaging.instance.onTokenRefresh.listen(Freshchat.setPushRegistrationToken);
+
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         var data = message.data;
         handleFreshchatNotification(data);
@@ -120,7 +119,7 @@ class _MyAppState extends State<MyApp> {
 
       FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
     }
-    
+
     var restoreStream = Freshchat.onRestoreIdGenerated;
     restoreStreamSubscription = restoreStream.listen((event) async {
       print("Inside Restore stream: Restore Id generated");
@@ -133,8 +132,7 @@ class _MyAppState extends State<MyApp> {
         restoreId = " ";
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-          new SnackBar(content: new Text("Restore ID copied: $restoreId")));
+      ScaffoldMessenger.of(context).showSnackBar(new SnackBar(content: new Text("Restore ID copied: $restoreId")));
     });
 
     //NOTE: Freshchat events
@@ -509,8 +507,7 @@ class _MyAppState extends State<MyApp> {
                     } else {
                       topicTagsList = [topicTags];
                     }
-                    Freshchat.showConversations(
-                        filteredViewTitle: topicName, tags: topicTagsList);
+                    Freshchat.showConversations(filteredViewTitle: topicName, tags: topicTagsList);
                   },
                 );
               },
@@ -716,8 +713,7 @@ class _MyAppState extends State<MyApp> {
                         eventProperties[values[0]] = values[1];
                       }
                     }
-                    Freshchat.trackEvent(eventName,
-                        properties: eventProperties);
+                    Freshchat.trackEvent(eventName, properties: eventProperties);
                   },
                 );
               },
@@ -793,8 +789,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () {
                 setState(
                   () {
-                    Freshchat.identifyUser(
-                        externalId: externalId, restoreId: restoreId);
+                    Freshchat.identifyUser(externalId: externalId, restoreId: restoreId);
                     Navigator.of(context, rootNavigator: true).pop(context);
                     final snackBar = SnackBar(
                       content: Text("Copied Restore ID: $obtainedRestoreId"),
@@ -971,8 +966,7 @@ class _MyAppState extends State<MyApp> {
                       break;
                     case 4:
                       Freshchat.resetUser();
-                      Freshchat.init(APPID, APPKEY, DOMAIN,
-                          themeName: "FCTheme.plist");
+                      Freshchat.init(APPID, APPKEY, DOMAIN, themeName: "FCTheme.plist");
                       break;
                     case 5:
                       setState(() {
@@ -1035,12 +1029,9 @@ class _MyAppState extends State<MyApp> {
                     case 14:
                       Map botVariables = {"Platform": "iOS"};
                       Map specificVariables = {
-                        "2eaabcea-607a-417d-82f0-c9cef946d5dd": {
-                          "SDKVersion": "1.2.3"
-                        }
+                        "2eaabcea-607a-417d-82f0-c9cef946d5dd": {"SDKVersion": "1.2.3"}
                       };
-                      Freshchat.setBotVariables(
-                          botVariables, specificVariables);
+                      Freshchat.setBotVariables(botVariables, specificVariables);
                       break;
                     case 15:
                       getParallelConversationData(context);
@@ -1095,10 +1086,7 @@ class FaqTagAlert extends StatefulWidget {
 
 class _FaqTagAlertState extends State<FaqTagAlert> {
   List<String>? faqTagsList, contactUsTagsList;
-  bool showContactUsOnFaqScreens = false,
-      showFaqGrid = true,
-      showContactUsOnAppBar = false,
-      showContactUsOnFaqNotHelpful = true;
+  bool showContactUsOnFaqScreens = false, showFaqGrid = true, showContactUsOnAppBar = false, showContactUsOnFaqNotHelpful = true;
   FaqType faqType = FaqType.Categories;
   String? faqTitle, faqTag, contactUsTitle, contactUsTags;
 
@@ -1187,8 +1175,7 @@ class _FaqTagAlertState extends State<FaqTagAlert> {
                   showContactUsOnFaqScreens = newValue!;
                 });
               },
-              controlAffinity:
-                  ListTileControlAffinity.leading, //  <-- leading Checkbox
+              controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
             ),
             CheckboxListTile(
               title: Text("Show FAQ Categories as Grid"),
@@ -1218,8 +1205,7 @@ class _FaqTagAlertState extends State<FaqTagAlert> {
                   showContactUsOnFaqNotHelpful = newValue!;
                 });
               },
-              controlAffinity:
-                  ListTileControlAffinity.leading, //  <-- leading Checkbox
+              controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
             ),
           ],
         ),
@@ -1251,8 +1237,7 @@ class _FaqTagAlertState extends State<FaqTagAlert> {
                     }
                   }
                   if (faqType == FaqType.Categories) {
-                    print(
-                        "FAQ category: $faqTitle, $contactUsTitle, $faqTagsList, $contactUsTagsList");
+                    print("FAQ category: $faqTitle, $contactUsTitle, $faqTagsList, $contactUsTagsList");
                     Freshchat.showFAQ(
                         faqTitle: faqTitle,
                         contactUsTitle: contactUsTitle,
@@ -1261,12 +1246,10 @@ class _FaqTagAlertState extends State<FaqTagAlert> {
                         faqFilterType: FaqFilterType.Category,
                         showContactUsOnFaqScreens: showContactUsOnFaqScreens,
                         showContactUsOnAppBar: showContactUsOnAppBar,
-                        showContactUsOnFaqNotHelpful:
-                            showContactUsOnFaqNotHelpful,
+                        showContactUsOnFaqNotHelpful: showContactUsOnFaqNotHelpful,
                         showFaqCategoriesAsGrid: showFaqGrid);
                   } else if (faqType == FaqType.Articles) {
-                    print(
-                        "FAQ article: $faqTitle, $contactUsTitle, $faqTagsList, $contactUsTagsList");
+                    print("FAQ article: $faqTitle, $contactUsTitle, $faqTagsList, $contactUsTagsList");
                     Freshchat.showFAQ(
                         faqTitle: faqTitle,
                         contactUsTitle: contactUsTitle,
@@ -1275,12 +1258,10 @@ class _FaqTagAlertState extends State<FaqTagAlert> {
                         faqFilterType: FaqFilterType.Article,
                         showContactUsOnFaqScreens: showContactUsOnFaqScreens,
                         showContactUsOnAppBar: showContactUsOnAppBar,
-                        showContactUsOnFaqNotHelpful:
-                            showContactUsOnFaqNotHelpful,
+                        showContactUsOnFaqNotHelpful: showContactUsOnFaqNotHelpful,
                         showFaqCategoriesAsGrid: showFaqGrid);
                   } else {
-                    print(
-                        "FAQ common: $faqTitle, $contactUsTitle, $faqTagsList, $contactUsTagsList");
+                    print("FAQ common: $faqTitle, $contactUsTitle, $faqTagsList, $contactUsTagsList");
                     Freshchat.showFAQ(
                         faqTitle: faqTitle,
                         contactUsTitle: contactUsTitle,
@@ -1289,8 +1270,7 @@ class _FaqTagAlertState extends State<FaqTagAlert> {
                         faqFilterType: FaqFilterType.Category,
                         showContactUsOnFaqScreens: showContactUsOnFaqScreens,
                         showContactUsOnAppBar: showContactUsOnAppBar,
-                        showContactUsOnFaqNotHelpful:
-                            showContactUsOnFaqNotHelpful,
+                        showContactUsOnFaqNotHelpful: showContactUsOnFaqNotHelpful,
                         showFaqCategoriesAsGrid: showFaqGrid);
                   }
                 });
