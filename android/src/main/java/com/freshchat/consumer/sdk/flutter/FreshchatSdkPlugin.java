@@ -554,6 +554,11 @@ public class FreshchatSdkPlugin implements FlutterPlugin, MethodCallHandler {
         Freshchat.notifyAppLocaleChange(context);
     }
 
+    public void dismissFreshchatView() {
+        Intent dismissIntent = new Intent("com.freshchat.consumer.sdk.actions.DismissFreshchatScreens");
+		LocalBroadcastManager.getInstance(context).sendBroadcast(dismissIntent);
+    } 
+
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
 
@@ -675,6 +680,10 @@ public class FreshchatSdkPlugin implements FlutterPlugin, MethodCallHandler {
 
                 case "notifyAppLocaleChange":
                     notifyAppLocaleChange();
+                    break;
+
+                case "dismissFreshchatView":
+                    dismissFreshchatView();
                     break;
 
                 default:
