@@ -925,6 +925,7 @@ class _MyAppState extends State<MyApp> {
     features.add(addFeature("Update Parallel Conversation Data", Icons.info));
     features.add(addFeature("Show Parallel Conversation 1", Icons.chat));
     features.add(addFeature("Show Parallel Conversation 2", Icons.chat));
+    features.add(addFeature("Dismiss Freshchat Screen", Icons.close_fullscreen));
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -1050,6 +1051,11 @@ class _MyAppState extends State<MyApp> {
                         Freshchat.showConversationWithReferenceID(parallelConversationReferenceID2, parallelConversationTopicName2);
                       }
                       break;
+                    case 18:
+                      Freshchat.showConversations();
+                      Future.delayed(Duration(seconds: 3), () {
+                        Freshchat.dismissFreshchatView();
+                      });
                   }
                 },
                 child: GridTile(
